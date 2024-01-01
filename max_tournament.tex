@@ -1,0 +1,18 @@
+\documentclass[crop,tikz,convert]{standalone}
+\usetikzlibrary{trees}
+\begin{document}
+\tikzstyle{every node}=[draw=black,anchor=west]
+\begin{tikzpicture}[%
+    grow via three points={%
+        one child at (0.5,-0.5) and two children at (0.5,-0.5) and (1,-0.5)
+    },
+    edge from parent path={(\tikzparentnode.east) -| (\tikzchildnode.north)}
+]
+  \node {1}
+    child { node {1}}		
+    child { node {2}}
+    child { node {3}}
+    child { node[draw=white] {...} }
+    child { node {$n$}};
+\end{tikzpicture}
+\end{document}

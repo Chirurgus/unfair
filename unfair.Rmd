@@ -1,0 +1,80 @@
+A tournament can be viewed as a sorting algorithm. What would hapen if we
+saw sorting algorithms as a tournaent bracket ?
+
+A tournament is defined in Meriam-Webster dictionary as
+
+``a series of games or contests that make up a single unit of competition (as on
+a professional golf tour), the championship playoffs of a league or conference,
+or an invitational event''
+
+A compettive game has, arguably by definition, the goal to win. A
+tournament in turn is a series of games to determine an ordering
+between a few teams, with particular attention given to the best
+team. An intresting way to look at a tournament as a sorting algorithm.
+
+
+Comparing tournaments to sorting algorithms can first provide an intresting
+way to present sorting algorithms, but also structure the way we think about
+tournaments.
+
+# Maximum algorithm
+
+Unlike a sorting algorithm, a torunament is subject to a number of
+real-life constraits. For example, if the goal was to determine
+the best team, one could apply the usual algorithm for finding the
+maximum : for an $n$-sized array, pick the first element of the
+array and compare it to the next element, keep the largest one; continue
+the comparaisons for all other. THis results in $n-1$ comparaison.
+
+From a tournament prespetive this would give a series of signle
+elimination games, and a bracket that looks like:
+
+![max_tournament](.out/max_tournament.pdf)
+
+This would make for a boring and unfair tournament. Indeed the best team would
+likely have to face play many more maches that any other team. Most teams would
+only ever get to play a signle match.
+
+THere are indeed many practical differences between an algorithm and a sprots
+bracket. First, fans would not enjoy it, nor would it be entirely fair that
+a team only gets one attempt. This is usually adressed by having some kind of
+group stage, or a round-robin, which guaratees that all teams get some minimal
+number of games. This also gets at the issue that team or player ordering is
+not necessairy transitive, i.e., if team $A$ beats team $B$ and tream $B$
+beats team $C$, this does not imply that team $A$ has a favorable machup
+against $C$. Indeed, we might well have rock-paper-scisors situtations. 
+
+Secondly this ignores many (all) balancing constriants such as home field
+advantage, referees, player exaution etc.
+
+# Insert sort 
+
+Undetered, we press on with perhaps the simplest sorting algorithm - insert
+sort. This approach can be viewed as $n$ rounds, first round only first two
+teams play. within each round a team
+plays
+
+```{r}
+insert_sort <- function(x, decreasing = FALSE) {
+    stopifnot(is.numeric(x))
+    n <- length(x)
+    for (i in seq(n)) {
+        for (j in rev(seq(i))) {
+            if (j == 1) next
+            if (x[j - 1] > x[j]) {
+                tmp <- x[j - 1]
+                x[j - 1] <- x[j]
+                x[j] <- tmp
+            } else {
+                break
+            }
+        }
+    }
+    if (decreasing) {
+        x <- rev(x)
+    }
+    x
+}
+x <- rpois(100, 100)
+identical(sort(x), insert_sort(x))
+```
